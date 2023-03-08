@@ -101,3 +101,12 @@ if __name__ == "__main__":
 
 # wss://wsapi.xfyun.cn/v1/aiui?appid=045ea9c1&checksum=6bddc6a6a038b003ab2ca0accb30de55&param=eyJzY2VuZSI6ICJtYWluX2JveCIsICJhdXRoX2lkIjogIjI4OTRjOTg1YmY4YjExMTFjNjcyOGRiNzlkMzQ3OWFiIiwgImRhdGFfdHlwZSI6ICJ0ZXh0In0=&curtime=1657447134&signtype=md5
 # wss://wsapi.xfyun.cn/v1/aiui?appid=045ea9c1&checksum=3bdf69641ace55649b8181ccc2eb018b&param=eyJzY2VuZSI6ICJtYWluX2JveCIsICJhdXRoX2lkIjogIjI4OTRjOTg1YmY4YjExMTFjNjcyOGRiNzlkMzQ3OWFiIiwgImRhdGFfdHlwZSI6ICJ0ZXh0In0=&curtime=1657447148&signtype=md5
+
+def textChat(textInput):
+    ###SampleData
+
+    if textInput == "sample":
+        return "Hello World!"
+
+
+    pass

@@ -1,6 +1,8 @@
-import modules.MChatting.xunfei_tts_dm_demo
+import modules.MChatting.textChat
 import modules.MLinking.http.httplink as httplink
+import modules.MLinking.protobuf.protobuflink as protolink
 
 if __name__ == "__main__":
     print("yes!")
-    httplink.Server_Intelli_Http()
+    protolink.test()
+    httplink.ServerFlask_Intelli_Http()
