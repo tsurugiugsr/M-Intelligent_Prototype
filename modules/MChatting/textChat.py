@@ -107,6 +107,8 @@ def textChat(textInput):
 
     if textInput == "sample":
         return "Hello World!"
+    else:
+        return run_xunfei_dm(textInput)
 
 
     pass

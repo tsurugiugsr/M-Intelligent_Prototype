@@ -38,9 +38,9 @@ def post():
     data = request.get_data()
     print(type(data))
     print(data)
-    request_Parsed = protolink.parse_Request(data)
+    requestContent, requestTTSType = protolink.parse_Request(data)
     
-    return protolink.encode_Response(request_Parsed)
+    return protolink.encode_Response(requestContent, requestTTSType)
     
 def ServerFlask_Intelli_Http():
     app.run(debug=True, host='0.0.0.0', port=211)
