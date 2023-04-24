@@ -82,7 +82,7 @@ def run_xunfei_dm(text):
         return '好了'
     elif '会做' in text:
         return '我会的可多了，我能查询非常多的内容，比如天气和新闻等等、唱歌、换发型、换衣服、切换镜头等等，我还在学习更多的能力'
-    elif '介绍' in text:
+    #elif '介绍' in text:
         return '我叫莱纳，来自卢米沃斯数字人项目组'
     else:
         # 对话平台的通用内容
