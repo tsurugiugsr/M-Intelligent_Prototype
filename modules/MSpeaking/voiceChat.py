@@ -1,6 +1,7 @@
 import sys
 import os
 import base64
+import wave
 
 import websocket
 import datetime
@@ -15,6 +16,11 @@ from wsgiref.handlers import format_date_time
 from datetime import datetime
 from time import mktime
 import _thread as thread
+from TTS.api import TTS
+
+model_name = TTS.list_models()[28]
+# Init TTS
+ttsEngine = TTS(TTS.list_models()[28])
 
 
 
@@ -28,7 +34,7 @@ class Ws_Param(object):
         self.Text = textIn
         self.CommonArgs = {"app_id": self.APPID}
         # 业务参数(business)，更多个性化参数可在官网查看
-        self.BusinessArgs = {"aue": "lame", "sfl": 1, "auf": "audio/L16;rate=16000", "vcn": "x4_lingxiaolu_en", "tte": "utf8"}
+        self.BusinessArgs = {"aue": "raw", "auf": "audio/L16;rate=16000", "vcn": "x4_lingxiaowan_en", "tte": "utf8"}
         self.Data = {"status": 2, "text": str(base64.b64encode(self.Text.encode('utf-8')), "UTF8")}
 
     # 初始化
@@ -41,7 +47,7 @@ class Ws_Param(object):
         # 公共参数(common)
         self.CommonArgs = {"app_id": self.APPID}
         # 业务参数(business)，更多个性化参数可在官网查看
-        self.BusinessArgs = {"aue": "lame", "sfl": 1, "auf": "audio/L16;rate=16000", "vcn": "x4_lingxiaolu_en", "tte": "utf8"}
+        self.BusinessArgs = {"aue": "raw", "auf": "audio/L16;rate=16000", "vcn": "x4_lingxiaowan_en", "tte": "utf8"}
         self.Data = {"status": 2, "text": str(base64.b64encode(self.Text.encode('utf-8')), "UTF8")}
         #使用小语种须使用以下方式，此处的unicode指的是 utf16小端的编码方式，即"UTF-16LE"”
         #self.Data = {"status": 2, "text": str(base64.b64encode(self.Text.encode('utf-16')), "UTF8")}
@@ -87,7 +93,7 @@ def on_message(ws, message):
         audio = message["data"]["audio"]
         audio = base64.b64decode(audio)
         status = message["data"]["status"]
-        print(message)
+        #print(message)
         if status == 2:
             print("ws is closed")
             ws.close()
@@ -96,7 +102,7 @@ def on_message(ws, message):
             print("sid:%s call error:%s code is:%s" % (sid, errMsg, code))
         else:
 
-            with open('./demo.mp3', 'ab') as f:
+            with open('./demo.pcm', 'ab') as f:
                 f.write(audio)
 
     except Exception as e:
@@ -112,7 +118,7 @@ def on_error(ws, error):
 
 
 # 收到websocket关闭的处理
-def on_close(ws):
+def on_close(ws, param1, param2):
     print("### closed ###")
 
 
@@ -126,8 +132,8 @@ def on_open(ws):
         d = json.dumps(d)
         print("------>开始发送文本数据")
         ws.send(d)
-        if os.path.exists('./demo.mp3'):
-            os.remove('./demo.mp3')
+        if os.path.exists('./demo.pcm'):
+            os.remove('./demo.pcm')
 
     thread.start_new_thread(run, ())
 
@@ -144,13 +150,31 @@ def iFlyTTS(textInput):
 
 
 def tts(textInput):
+    print(textInput)
     iFlyTTS(textInput)
     
-    with open("/Users/tsurugiugushiro/Documents/HomeWork/2022.9/M-Intelligent_Prototype/demo.pcm", "rb") as f:
+    with open("/Users/tsurugiugushiro/Documents/HomeWork/2022.9/M-Intelligent_Prototype/demo.wav", "rb") as f:
         audioData = f.read()
     audio64 = base64.b64encode(audioData)
     audio64.decode('utf-8')
+    with wave.open("/Users/tsurugiugushiro/Documents/HomeWork/2022.9/M-Intelligent_Prototype/demo.wav", 'wb') as wavfile:
+        wavfile.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
+        wavfile.writeframes(audioData)
     return audio64
     
+
+def ttsLocal(textInput):
+    print(textInput)
+    ttsEngine.tts_with_vc_to_file(
+    textInput,
+    speaker_wav="/Users/tsurugiugushiro/Documents/HomeWork/2022.9/M-Intelligent_Prototype/Yoimiya3.mp3",
+    file_path="/Users/tsurugiugushiro/Documents/HomeWork/2022.9/M-Intelligent_Prototype/demo.wav")
+    with open("/Users/tsurugiugushiro/Documents/HomeWork/2022.9/M-Intelligent_Prototype/demo.wav", "rb") as f:
+        audioData = f.read()
+    #audio64 = base64.b64encode(audioData)
+    ＃audio64.decode('utf-8')
+    return audioData
+
+
 if __name__ == "__main__":
     tts("你好")

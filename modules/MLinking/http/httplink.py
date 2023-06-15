@@ -36,8 +36,8 @@ BASE_URL = '/audio2bs'
 def post():
 
     data = request.get_data()
-    print(type(data))
-    print(data)
+    #print(type(data))
+    #print(data)
     requestContent, requestTTSType = protolink.parse_Request(data)
     
     return protolink.encode_Response(requestContent, requestTTSType)

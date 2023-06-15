@@ -16,7 +16,7 @@ def parse_Request(request_Source):
     try:
         Request = a2f.Request()
         Request.ParseFromString(request_Source)
-        print("Request Parsed:\nContent = " + Request.content + "\nTTS_Type = " + Request.tts_type + "\n")
+        #print("Request Parsed:\nContent = " + Request.content + "\nTTS_Type = " + Request.tts_type + "\n")
         return Request.content, Request.tts_type
     finally:
         pass
@@ -28,12 +28,14 @@ def encode_Response(requestContent, requestTTSType):
     textResponse = textChat.textChat(requestContent)
     Response.content = textResponse
     Response.emotion = 1.0
-    emoSample = facing.emoSample()
+    Response.wav_data = voiceChat.ttsLocal(textResponse)
+    emoSample = facing.emoChat()
     for i in emoSample:
-        Response.bs_value.append(i)
+        Response.bs_value.append(i * 1.7)
     for i in facing.bs_keys:
         Response.bs_key.append(i)
-    Response.wav_data = voiceChat.tts(textResponse)
+        Response.bs_value.append(0)
+
     rDecoded = Response.SerializeToString()
     return rDecoded
 
