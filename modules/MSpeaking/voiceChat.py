@@ -172,7 +172,7 @@ def ttsLocal(textInput):
     with open("/Users/tsurugiugushiro/Documents/HomeWork/2022.9/M-Intelligent_Prototype/demo.wav", "rb") as f:
         audioData = f.read()
     #audio64 = base64.b64encode(audioData)
-    ＃audio64.decode('utf-8')
+    #audio64.decode('utf-8')
     return audioData
 
 
